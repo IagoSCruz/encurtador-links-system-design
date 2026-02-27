@@ -1,0 +1,59 @@
+# values.yaml — valores padrão do Helm chart
+# Sobrescritos em CI via --set ou arquivo de values por ambiente
+
+# --- Imagem ---
+image:
+  repository: ghcr.io/seu-usuario/encurtador
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# --- Réplicas da aplicação ---
+replicaCount: 2
+
+# --- Serviço Kubernetes ---
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+# --- Ingress (expõe externamente) ---
+ingress:
+  enabled: true
+  className: nginx
+  host: encurtador.local
+  tls: false
+
+# --- Resources ---
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "250m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+# --- Probe de saúde ---
+probes:
+  liveness:
+    path: /actuator/health/liveness
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  readiness:
+    path: /actuator/health/readiness
+    initialDelaySeconds: 20
+    periodSeconds: 5
+
+# --- Variáveis de ambiente Spring ---
+spring:
+  profile: docker
+
+# --- Secrets (injetados pelo CI via --set) ---
+secrets:
+  dbHost: postgres-primary
+  dbPort: "5432"
+  dbName: encurtador
+  dbUser: encurtador
+  dbPassword: ""         # obrigatório: definir via --set secrets.dbPassword=***
+  redisHost: redis
+  redisPort: "6379"
+  redisPassword: ""      # obrigatório: definir via --set secrets.redisPassword=***

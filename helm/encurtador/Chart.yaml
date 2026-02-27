@@ -1,0 +1,6 @@
+apiVersion: v2
+name: encurtador
+description: Encurtador de links — Helm chart para deploy em Kubernetes
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

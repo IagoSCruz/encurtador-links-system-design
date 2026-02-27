@@ -1,0 +1,11 @@
+# Ignora tudo que não vai para a imagem Docker
+# Reduz o contexto de build e evita enviar arquivos sensíveis
+.git
+.github
+.gitignore
+.env
+target/
+*.md
+docker/
+helm/
+src/test/
